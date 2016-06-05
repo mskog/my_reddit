@@ -1,0 +1,16 @@
+machine:
+  services:
+    - docker
+
+dependencies:
+  cache_directories:
+      - "~/docker"
+  override:
+    - docker info
+    - if [[ -e ~/docker/image.tar ]]; then docker load -i ~/docker/image.tar; fi
+    - docker build -t mskog/my_reddit .
+    - mkdir -p ~/docker; docker save mskog/my_reddit > ~/docker/image.tar
+
+test:
+  override:
+    - docker run mskog/my_reddit bundle exec rspec
