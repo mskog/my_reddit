@@ -7,8 +7,7 @@ web:
   volumes_from:
     - bundle
   ports:
-    - '8080:8080'
-  command: bundle exec shotgun --host 0.0.0.0 -p 8080
+    - '8090:8080'
 
 bundle:
   image: busybox
