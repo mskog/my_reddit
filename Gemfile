@@ -17,4 +17,5 @@ group :development, :test do
   gem 'rspec-given', '~> 3.8'
   gem 'rack-test', '~> 0.6.3'
   gem 'pry-byebug', '~> 3.3'
+  gem 'guard-rspec', '~> 4.7'
 end

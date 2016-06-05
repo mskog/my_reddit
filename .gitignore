@@ -36,3 +36,5 @@ build/
 .rvmrc
 
 .env
+ACCESS_TOKEN
+supervisord.pid
