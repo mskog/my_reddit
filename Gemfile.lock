@@ -25,6 +25,8 @@ GEM
     dotenv (2.1.1)
     enumerable-lazy (0.0.1)
     equalizer (0.0.11)
+    faraday (0.9.2)
+      multipart-post (>= 1.2, < 3)
     given_core (3.8.0)
       sorcerer (>= 0.3.7)
     grape (0.16.2)
@@ -46,6 +48,7 @@ GEM
     minitest (5.9.0)
     multi_json (1.12.1)
     multi_xml (0.5.5)
+    multipart-post (2.0.0)
     mustermann19 (0.4.3)
       enumerable-lazy
     pry (0.10.3)
@@ -100,6 +103,7 @@ PLATFORMS
 
 DEPENDENCIES
   dotenv (~> 2.1)
+  faraday (~> 0.9.2)
   grape (~> 0.16)
   pry-byebug (~> 3.3)
   puma (~> 3.4)

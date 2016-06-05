@@ -1,5 +1,7 @@
 web:
   build: .
+  env_file:
+    - ./.env
   volumes:
     - .:/code
   volumes_from:
