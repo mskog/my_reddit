@@ -16,3 +16,9 @@ test:
   override:
     - docker-compose run web bundle install
     - docker-compose run web bundle exec rspec
+
+deployment:
+  production:
+    branch: master
+    commands:
+      - ssh $DEPLOY_TO -t 'bash -l -c "cd /var/docker/my_reddit && git pull origin master && docker-compose -f docker-compose.production.yml build && docker-compose -f docker-compose.production.yml restart"'
