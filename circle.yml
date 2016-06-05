@@ -13,4 +13,5 @@ dependencies:
 
 test:
   override:
+    - docker run mskog/my_reddit bundle install
     - docker run mskog/my_reddit bundle exec rspec
