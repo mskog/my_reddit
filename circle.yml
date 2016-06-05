@@ -13,4 +13,4 @@ dependencies:
 
 test:
   override:
-    - docker run mskog/my_reddit bundle install && bundle exec rspec
+    - docker run -e "RACK_ENV=test" mskog/my_reddit bundle install && bundle exec rspec
