@@ -9,9 +9,8 @@ dependencies:
     - docker info
     - if [[ -e ~/docker/image.tar ]]; then docker load -i ~/docker/image.tar; fi
     - docker build -t mskog/my_reddit .
-    - docker run mskog/my_reddit bundle install
     - mkdir -p ~/docker; docker save mskog/my_reddit > ~/docker/image.tar
 
 test:
   override:
-    - docker run mskog/my_reddit bundle exec rspec
+    - docker run mskog/my_reddit bundle install && bundle exec rspec
