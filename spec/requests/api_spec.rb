@@ -56,6 +56,35 @@ describe MyReddit::API do
 
         Then{expect(JSON.parse(last_response.body)).to eq("foo" => "bar")}
       end
+
+      context "with old access token" do
+        Given(:access_token){'foobar'}
+
+        Given do
+          File.open('ACCESS_TOKEN', 'w') do |file|
+            file << access_token
+          end
+        end
+
+        Given do
+          allow(File).to receive(:stat).with('ACCESS_TOKEN').and_return(OpenStruct.new(mtime: 3))
+        end
+
+        Given!(:access_token_stub) do
+          stub_request(:post, "https://#{ENV['CLIENT_ID']}:#{ENV['CLIENT_SECRET']}@www.reddit.com/api/v1/access_token").
+            with(:body => {"grant_type"=>"refresh_token", "refresh_token"=>"#{ENV['REFRESH_TOKEN']}"}).
+            to_return(:status => 200, :body => {'access_token' => access_token}.to_json, :headers => {})
+        end
+
+        Given do
+          stub_request(:get, "https://oauth.reddit.com//r/top").
+           with(:headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'Authorization'=>"bearer #{access_token}", 'User-Agent'=>'Faraday v0.9.2'}).
+           to_return(:status => 200, :body => {foo: :bar}.to_json, :headers => {})
+        end
+
+        Then{expect(JSON.parse(last_response.body)).to eq("foo" => "bar")}
+        And{expect(access_token_stub).to have_been_requested}
+      end
     end
   end
 end
