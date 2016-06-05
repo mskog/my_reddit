@@ -5,6 +5,10 @@ module MyReddit
   class API < Grape::API
     format :json
 
+    http_basic do |username, password|
+      { ENV['AUTH_USERNAME'] => ENV['AUTH_PASSWORD'] }[username] == password
+    end
+
     get "*" do
       params = request.params
       params.delete('splat')
