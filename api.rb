@@ -14,6 +14,12 @@ module MyReddit
       params.delete('splat')
       Reddit.new.get(request.path, params)
     end
+
+    post "*" do
+      params = request.params
+      params.delete('splat')
+      Reddit.new.post(request.path, params)
+    end
   end
 
   class Reddit
@@ -23,7 +29,10 @@ module MyReddit
       end.body)
     end
 
-    def post(*)
+    def post(url, params)
+      JSON.parse(Faraday.post('https://oauth.reddit.com/' + url, params) do |request|
+        request.headers['Authorization'] = "bearer #{access_token}"
+      end.body)
     end
 
     private

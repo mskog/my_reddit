@@ -87,4 +87,82 @@ describe MyReddit::API do
       end
     end
   end
+
+  describe "POST" do
+    context "with valid authentication" do
+      Given(:id){4}
+
+      When do
+        authorize ENV['AUTH_USERNAME'], ENV['AUTH_PASSWORD']
+        post "/api/unsave", id: id
+      end
+
+      context "with no access token" do
+        Given(:access_token){'foobar'}
+        Given do
+          stub_request(:post, "https://#{ENV['CLIENT_ID']}:#{ENV['CLIENT_SECRET']}@www.reddit.com/api/v1/access_token").
+            with(:body => {"grant_type"=>"refresh_token", "refresh_token"=>"#{ENV['REFRESH_TOKEN']}"}).
+            to_return(:status => 200, :body => {'access_token' => access_token}.to_json, :headers => {})
+        end
+
+        Given do
+          stub_request(:post, "https://oauth.reddit.com//api/unsave").
+            with(:body => {"id"=>"#{id}"},
+                 :headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'Authorization'=>'bearer foobar', 'Content-Type'=>'application/x-www-form-urlencoded', 'User-Agent'=>'Faraday v0.9.2'}).
+            to_return(:status => 200, :body => {}.to_json, :headers => {})
+        end
+
+        Then{}
+      end
+
+      context "with existing up to date access token" do
+        Given(:access_token){'foobar'}
+
+        Given do
+          File.open('ACCESS_TOKEN', 'w') do |file|
+            file << access_token
+          end
+        end
+
+        Given do
+          stub_request(:post, "https://oauth.reddit.com//api/unsave").
+            with(:body => {"id"=>"#{id}"},
+                 :headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'Authorization'=>'bearer foobar', 'Content-Type'=>'application/x-www-form-urlencoded', 'User-Agent'=>'Faraday v0.9.2'}).
+            to_return(:status => 200, :body => {}.to_json, :headers => {})
+        end
+
+        Then{}
+      end
+
+      context "with old access token" do
+        Given(:access_token){'foobar'}
+
+        Given do
+          File.open('ACCESS_TOKEN', 'w') do |file|
+            file << access_token
+          end
+        end
+
+        Given do
+          allow(File).to receive(:stat).with('ACCESS_TOKEN').and_return(OpenStruct.new(mtime: 3))
+        end
+
+        Given!(:access_token_stub) do
+          stub_request(:post, "https://#{ENV['CLIENT_ID']}:#{ENV['CLIENT_SECRET']}@www.reddit.com/api/v1/access_token").
+            with(:body => {"grant_type"=>"refresh_token", "refresh_token"=>"#{ENV['REFRESH_TOKEN']}"}).
+            to_return(:status => 200, :body => {'access_token' => access_token}.to_json, :headers => {})
+        end
+
+        Given do
+          stub_request(:post, "https://oauth.reddit.com//api/unsave").
+            with(:body => {"id"=>"#{id}"},
+                 :headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'Authorization'=>'bearer foobar', 'Content-Type'=>'application/x-www-form-urlencoded', 'User-Agent'=>'Faraday v0.9.2'}).
+            to_return(:status => 200, :body => {}.to_json, :headers => {})
+        end
+
+        Then{expect(access_token_stub).to have_been_requested}
+      end
+    end
+  end
 end
+
