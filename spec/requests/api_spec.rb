@@ -107,9 +107,9 @@ describe MyReddit::API do
 
         Given do
           stub_request(:post, "https://oauth.reddit.com//api/unsave").
-            with(:body => {"id"=>"#{id}"},
-                 :headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'Authorization'=>'bearer foobar', 'Content-Type'=>'application/x-www-form-urlencoded', 'User-Agent'=>'Faraday v0.9.2'}).
-            to_return(:status => 200, :body => {}.to_json, :headers => {})
+                   with(:body => {"id"=>"4"},
+                        :headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'Authorization'=>'bearer foobar', 'Content-Type'=>'application/x-www-form-urlencoded', 'User-Agent'=>'Faraday v0.9.2'}).
+                   to_return(:status => 200, :body => "{}", :headers => {})
         end
 
         Then{}
@@ -126,9 +126,9 @@ describe MyReddit::API do
 
         Given do
           stub_request(:post, "https://oauth.reddit.com//api/unsave").
-            with(:body => {"id"=>"#{id}"},
-                 :headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'Authorization'=>'bearer foobar', 'Content-Type'=>'application/x-www-form-urlencoded', 'User-Agent'=>'Faraday v0.9.2'}).
-            to_return(:status => 200, :body => {}.to_json, :headers => {})
+                   with(:body => {"id"=>"4"},
+                        :headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'Authorization'=>'bearer foobar', 'Content-Type'=>'application/x-www-form-urlencoded', 'User-Agent'=>'Faraday v0.9.2'}).
+                   to_return(:status => 200, :body => "{}", :headers => {})
         end
 
         Then{}
@@ -155,10 +155,10 @@ describe MyReddit::API do
 
         Given do
           stub_request(:post, "https://oauth.reddit.com//api/unsave").
-            with(:body => {"id"=>"#{id}"},
-                 :headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'Authorization'=>'bearer foobar', 'Content-Type'=>'application/x-www-form-urlencoded', 'User-Agent'=>'Faraday v0.9.2'}).
-            to_return(:status => 200, :body => {}.to_json, :headers => {})
-        end
+                   with(:body => {"id"=>"#{id}"},
+                        :headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'Authorization'=>'bearer foobar', 'Content-Type'=>'application/x-www-form-urlencoded', 'User-Agent'=>'Faraday v0.9.2'}).
+                   to_return(:status => 200, :body => "{}", :headers => {})
+          end
 
         Then{expect(access_token_stub).to have_been_requested}
       end

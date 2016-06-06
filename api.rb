@@ -30,8 +30,9 @@ module MyReddit
     end
 
     def post(url, params)
-      JSON.parse(Faraday.post('https://oauth.reddit.com/' + url, params) do |request|
+      JSON.parse(Faraday.post('https://oauth.reddit.com/' + url) do |request|
         request.headers['Authorization'] = "bearer #{access_token}"
+        request.body = params
       end.body)
     end
 
