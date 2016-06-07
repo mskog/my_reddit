@@ -9,9 +9,9 @@ dependencies:
     - docker info
     - if [[ -e ~/docker/image.tar ]]; then docker load -i ~/docker/image.tar; fi
     - docker build -t mskog/my_reddit .
+    - docker-compose run web bundle install
     - cp .env.example .env
     - mkdir -p ~/docker; docker save mskog/my_reddit > ~/docker/image.tar
-    - docker-compose run web bundle install
 
 test:
   override:
