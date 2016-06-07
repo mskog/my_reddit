@@ -1,18 +1,9 @@
 require 'uri'
 require 'faraday'
-require 'rollbar'
 
 module MyReddit
   class API < Grape::API
     format :json
-
-    Rollbar.configure do
-      Rollbar.configure do |config|
-        config.access_token = '049d8c928a08424ba0cbca204d893c2b'
-        config.framework = "Grape: #{Grape::VERSION}"
-        config.root = Dir.pwd
-      end
-    end
 
     http_basic do |username, password|
       { ENV['AUTH_USERNAME'] => ENV['AUTH_PASSWORD'] }[username] == password
