@@ -6,6 +6,7 @@ gem 'grape', '~> 0.16'
 gem 'dotenv', '~> 2.1'
 gem 'puma', '~> 3.4'
 gem 'faraday', '~> 0.9.2'
+gem 'rollbar', '~> 2.11'
 
 group :development do
   gem 'shotgun'
