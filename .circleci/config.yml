@@ -42,8 +42,8 @@ jobs:
 
       - type: shell
         command: |
-          bundle exec rails test \
-                            $(circleci tests glob "test/**/*_test.rb" | circleci tests split --split-by=timings)
+          bundle exec rspec \
+                            $(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)
 
       - deploy:
           name: Maybe Deploy
