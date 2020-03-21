@@ -1,0 +1,55 @@
+version: 2
+jobs:
+  build:
+    parallelism: 1
+    working_directory: ~/workspace
+    docker:
+      - image: circleci/ruby:2.6.2-node-browsers
+        environment:
+          BUNDLE_JOBS: 3
+          BUNDLE_RETRY: 3
+          BUNDLE_PATH: vendor/bundle
+    steps:
+      - checkout
+
+      - run:
+          name: Configure Bundler
+          command: |
+            echo 'export BUNDLER_VERSION=$(cat Gemfile.lock | tail -1 | tr -d " ")' >> $BASH_ENV
+            source $BASH_ENV
+            gem install bundler
+
+      # Which version of bundler?
+      - run:
+          name: Which bundler?
+          command: bundle -v
+
+      # Restore bundle cache
+      - restore_cache:
+          keys:
+            - my_reddit-v2-{{ checksum "Gemfile.lock" }}
+            - my_reddit-v2-
+
+      - run:
+          name: Bundle Install
+          command: bundle check || bundle install
+
+      # Store bundle cache
+      - save_cache:
+          key: my_reddit-v2-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+
+      - type: shell
+        command: |
+          bundle exec rails test \
+                            $(circleci tests glob "test/**/*_test.rb" | circleci tests split --split-by=timings)
+
+      - deploy:
+          name: Maybe Deploy
+          command: |
+            ssh-keyscan -H $DEPLOY_HOST >> ~/.ssh/known_hosts
+
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              git push dokku@$DEPLOY_HOST:myreddit master
+            fi

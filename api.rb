@@ -4,6 +4,8 @@ require "uri"
 require "faraday"
 require "dotenv/load"
 
+# configure{ set :server, :puma }
+
 module MyReddit
   class API < Grape::API
     format :json
