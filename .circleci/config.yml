@@ -42,6 +42,10 @@ jobs:
 
       - type: shell
         command: |
+          cp .env.example .env
+
+      - type: shell
+        command: |
           bundle exec rspec \
                             $(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)
 
