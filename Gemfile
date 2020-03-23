@@ -14,7 +14,7 @@ group :development do
 end
 
 group :development, :test do
-  gem "pry-byebug", "~> 3.8"
+  gem "pry-byebug", "~> 3.9"
   gem "rack-test", "~> 1.1.0"
   gem "rspec", "~> 3.9.0"
   gem "rspec-given", "~> 3.8"
