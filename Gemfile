@@ -7,7 +7,7 @@ ruby "2.6.2"
 gem "dotenv", "~> 2.1"
 gem "faraday", "~> 0.9.2"
 gem "grape", "~> 1.3.1"
-gem "puma", "~> 3.4"
+gem "puma", "~> 4.3"
 
 group :development do
   gem "shotgun"
