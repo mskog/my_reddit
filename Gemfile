@@ -18,6 +18,6 @@ group :development, :test do
   gem "rack-test", "~> 1.1.0"
   gem "rspec", "~> 3.9.0"
   gem "rspec-given", "~> 3.8"
-  gem "rubocop", "~> 0.74.0"
+  gem "rubocop", "~> 0.86.0"
   gem "webmock", "~> 1.24"
 end
